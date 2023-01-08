@@ -37,6 +37,13 @@ export type Post = {
     }
 }
 
+export type Comment = {
+    id: string
+    name: string
+    content?: string
+    created_at?: string
+}
+
 export const DefaultPost = {
     id: '',
     title: '',
