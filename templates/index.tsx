@@ -22,7 +22,7 @@ const IndexTemplate: NextPage<IndexProps> = (props) => {
                 <svg className="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
 
                 <h2>{__('Heading')}</h2>
-                <p>Another exciting bit of representative placeholder content. This time, we've moved on to the second column.</p>
+                <p>{__('Another exciting bit of representative placeholder content. This time, we\'ve moved on to the second column.')}</p>
                 <p><a className="btn btn-secondary" href="#">{__('View details')} &raquo;</a></p>
               </div>
               <div className="col-lg-4">
@@ -40,7 +40,9 @@ const IndexTemplate: NextPage<IndexProps> = (props) => {
               <>
                 <div key={item.id} className="row featurette">
                   <div className={"col-md-7" + (index % 2 != 0 ? ' order-md-2': '')}>
-                    <h2 className="featurette-heading">{item.title}</h2>
+                    <h2 className="featurette-heading">
+                      <Link href={item.url}>{item.title}</Link>
+                    </h2>
                     <p className="lead">{item.description}</p>
                     <p><Link className="btn btn-secondary" href={item.url}>{__('View details')} &raquo;</Link></p>
                   </div>

@@ -1,4 +1,5 @@
 import { NextPage } from "next";
+import Link from "next/link";
 import { upload_url } from "../../context/Helper";
 import { SingleProps } from "../../context/Props";
 
@@ -10,7 +11,7 @@ const TaxonomyTemplate: NextPage<SingleProps> = (props) => {
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-md-8">
-                        <h1>{post.title}</h1>
+                        <h1><Link href={post.url}>{post.title}</Link></h1>
 
                         <img src={upload_url(post?.thumbnail)} alt="" className="w-100" />
 
