@@ -1,9 +1,8 @@
 import { NextPage } from "next";
-import Link from "next/link";
 import { upload_url } from "../../context/Helper";
 import { SingleProps } from "../../context/Props";
 
-const SingleTemplate: NextPage<SingleProps> = (props) => {
+const TaxonomyTemplate: NextPage<SingleProps> = (props) => {
     const { post } = props;
 
     return (
@@ -31,4 +30,4 @@ const SingleTemplate: NextPage<SingleProps> = (props) => {
     );
 }
 
-export default SingleTemplate;
+export default TaxonomyTemplate;

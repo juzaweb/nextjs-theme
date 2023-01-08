@@ -1,4 +1,4 @@
-import { IndexProps } from "../context/PostContext";
+import { IndexProps } from "../context/Props";
 import { NextPage } from "next";
 import Link from "next/link";
 import { upload_url, __ } from "../context/Helper";

@@ -1,10 +1,10 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 
 export async function getPostBySlug(slug: string) {
     try {
       const response = await axios.get(`post-type/posts/${slug}`);
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
     }
 }
