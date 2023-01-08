@@ -2,9 +2,11 @@ import '../styles/globals.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import type { AppProps } from 'next/app';
-import type { ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode, useState, useEffect } from 'react';
 import type { NextPage } from 'next';
 import axios from 'axios';
+import { getThemeSetting } from '../context/DataHelper';
+import { Config } from '../context/Config';
 
 axios.defaults.baseURL = process.env.BASE_API_URL;
 
@@ -17,7 +19,21 @@ type AppPropsWithLayout = AppProps & {
 }
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
+  const [ context, setContext ] = useState(null);
+
+  useEffect(() => {
+    getThemeSetting()
+      .then(function (response) {
+        setContext(response.data);
+      })
+      .catch(function (error) {
+        throw Error(error);
+      });
+  }, []);
+
+  if (!context) return;
+
   const getLayout = Component.getLayout ?? ((page) => page);
 
-  return getLayout(<Component {...pageProps} />);
+  return getLayout(<Config.Provider value={context}><Component {...pageProps} /></Config.Provider>);
 }
