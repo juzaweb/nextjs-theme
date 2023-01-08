@@ -1,11 +1,13 @@
 import Head from 'next/head'
 import useSWR from 'swr';
 import Link from 'next/link'
+import { Key, ReactElement } from 'react'
+import { fetcher, Post } from '../context/PostContext';
+import Layout from '../components/Layout';
+import TemplateIndex from '../templates';
 
-const fetcher = (url) => fetch(url).then(r => r.json());
-
-export default function Home() {
-  const { data, error, isLoading } = useSWR('http://cms.local/api/post-type/posts?sort_by=id&sort_order=desc', fetcher);
+const Home = () => {
+  const { data, error, isLoading } = useSWR('post-type/posts?sort_by=id&sort_order=desc', fetcher);
 
   if (error) return <div>failed to load</div>
   if (isLoading) return <div>loading...</div>
@@ -18,13 +20,17 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        {data.data.map((item, index) => (
-          <div key={index}>
-          <h5><Link href={`post/${item.slug}`}>{item.title}</Link></h5>
-        </div>
-        ))}
-      </main>
+      <TemplateIndex />
     </>
   )
 }
+
+Home.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <Layout>
+      {page}
+    </Layout>
+  )
+}
+
+export default Home;
