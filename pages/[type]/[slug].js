@@ -1,40 +1,41 @@
 import Head from 'next/head';
-import useSWR from 'swr';
 import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
-
-const fetcher = url => fetch(url).then(r => r.json());
-const baseUrl = process.env.BASE_API_URL;
-
-// export const getServerSideProps = async(context) => {
-//   const { slug } = context.query;
-//   let post = null;
-//   if (process.env.SERVERSIDE_RENDING) {
-//     const res = await fetch(`${baseUrl}/post-type/posts/${slug}`);
-//     post = await res.json();
-//   }
-//   return { props: { post, slug } };
-// }
+import { useState, useEffect } from 'react';
+import { getPostBySlug } from '../../context/DataHelper';
+import SingleTemplate from '../../templates/template-parts/single';
 
 export default function Post() {
   const router = useRouter();
+  const [isLoading, setLoading] = useState(false);
+  const [post, setPost] = useState(null)
   const { slug } = router.query;
-  const { data, error, isLoading } = useSWR(slug ? `${baseUrl}/post-type/posts/${slug}` :  null, fetcher);
+  
+  useEffect(() => {
+    setLoading(true)
+    slug ? getPostBySlug(slug)
+      .then(function (response) {
+        setPost(response.data);
+        setLoading(false);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+      .finally(() => setLoading(false)) : null;
+  }, [slug]);
 
-  if (error) return <div>failed to load</div>
-  if (isLoading || !data) return <div>loading...</div>
+  if (!post) return;
 
   return (
     <Layout>
       <Head>
-        <title>{data.data.title}</title>
-        <meta name="description" content={data.data.description} />
+        <title>{post.title}</title>
+        <meta name="description" content={post.description} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <h1>{data.data.title}</h1>
-        {data.data.content}
-      </main>
+      
+      <SingleTemplate post={post} isLoading={isLoading} />
     </Layout>
   )
 }
