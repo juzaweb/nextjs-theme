@@ -37,15 +37,15 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
     })();
   }, []);
 
-  if (!context) return <div>Loading...</div>;
+  if (!context) return;
 
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return getLayout(
-    <Config.Provider value={context}>
-      <SafeHydrate>
-        <Component {...pageProps} />
-      </SafeHydrate>
-    </Config.Provider>
+    <SafeHydrate>
+      <Config.Provider value={context}>
+            <Component {...pageProps} />
+      </Config.Provider>
+    </SafeHydrate>
   );
 }

@@ -25,6 +25,7 @@ const Home = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  if (!config) return;
   if (!posts) return;
 
   return (

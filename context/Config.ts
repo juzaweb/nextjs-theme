@@ -9,5 +9,5 @@ export const DefaultConfigData = {
     title: 'Juzaweb CMS',
     description: 'Juzaweb CMS',
 };
-
+//<ConfigData>(DefaultConfigData)
 export const Config = React.createContext(<ConfigData>(DefaultConfigData));
