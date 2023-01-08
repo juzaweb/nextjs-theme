@@ -18,22 +18,34 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout
 }
 
+function SafeHydrate({ children }: any) {
+  return (
+    <div suppressHydrationWarning>
+      {typeof window === 'undefined' ? null : children}
+    </div>
+  )
+}
+
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const [ context, setContext ] = useState(null);
 
   useEffect(() => {
-    getThemeSetting()
-      .then(function (response) {
-        setContext(response.data);
-      })
-      .catch(function (error) {
-        throw Error(error);
-      });
+    (async () => {
+      const response = await getThemeSetting();
+
+      setContext(response.data)
+    })();
   }, []);
 
-  if (!context) return;
+  if (!context) return <div>Loading...</div>;
 
   const getLayout = Component.getLayout ?? ((page) => page);
 
-  return getLayout(<Config.Provider value={context}><Component {...pageProps} /></Config.Provider>);
+  return getLayout(
+    <Config.Provider value={context}>
+      <SafeHydrate>
+        <Component {...pageProps} />
+      </SafeHydrate>
+    </Config.Provider>
+  );
 }
